@@ -1,7 +1,8 @@
-import { ObjectId, Schema, Types } from "mongoose";
+import { Request } from "express";
+import mongoose, { ObjectId, Schema, Types } from "mongoose";
 
 export interface Iuser {
-    _id : Types.ObjectId;
+    _id: Types.ObjectId;
     username: string;
     email: string;
     name:string;
@@ -26,4 +27,25 @@ export interface Ipost {
     text: string; 
     userProfilePic?: string;
     username?: string;
+  }
+
+  export interface NewUserRequest{
+    name:string;
+    email:string,
+    username:string;
+    password:string;
+  }
+
+  export interface Iuserid{
+    userId:Types.ObjectId;
+}
+
+export interface ExistingUserRequest{
+    username: string ;
+    password : string ;
+}
+
+
+  export interface customRequest extends Request{
+    user?:Iuser;
   }
