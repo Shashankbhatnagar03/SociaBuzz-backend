@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { ObjectId, Schema, Types } from "mongoose";
 
 export interface Iuser {
     _id : Types.ObjectId;
@@ -13,3 +13,17 @@ export interface Iuser {
     createdAt: Date;
     updatedAt: Date;
 }
+export interface Ipost {
+    postedBy: ObjectId;
+    text?: string; 
+    img?: string; 
+    likes: number;
+    replies: IReply[];
+  }
+  
+  export interface IReply {
+    userId: ObjectId;
+    text: string; 
+    userProfilePic?: string;
+    username?: string;
+  }
