@@ -18,7 +18,7 @@ export interface Ipost {
   postedBy: ObjectId;
   text?: string;
   img?: string;
-  likes: number;
+  likes: ObjectId[];
   replies: IReply[];
 }
 
