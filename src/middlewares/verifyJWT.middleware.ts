@@ -17,10 +17,13 @@ const verifyJWT = async (
       token,
       process.env.JWT_SECRET as string
     ) as jwt.JwtPayload;
+    // console.log(decoded);
     const user = await User.findById(decoded.userId).select("-password");
+    // console.log(decoded.userId);
 
-    if (!user) return res.status(401).json({ message: "Invalid Access token" });
+    if (!user) return res.status(401).json({ message: "Invalid Access Token" });
 
+    // console.log(user);
     req.user = user;
 
     next();

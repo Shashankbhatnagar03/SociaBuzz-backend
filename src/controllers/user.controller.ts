@@ -36,7 +36,7 @@ const signupUser = async (
     await newUser.save();
 
     if (newUser) {
-      generateTokenAndSetCookie({ userId: newUser._id }, res);
+      generateTokenAndSetCookie(newUser._id, res);
       res.status(201).json({
         _id: newUser._id,
         name: newUser.name,
@@ -71,7 +71,7 @@ const loginUser = async (
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid password" });
 
-    generateTokenAndSetCookie({ userId: existingUser._id }, res);
+    generateTokenAndSetCookie(existingUser._id, res);
 
     res.status(200).json({
       _id: existingUser._id,
@@ -121,10 +121,12 @@ const followUnFollowUser = async (req: customRequest, res: Response) => {
       //Unfollow User
       await User.findByIdAndUpdate(id, { $pull: { followers: req.user?._id } });
       await User.findByIdAndUpdate(req.user?._id, { $pull: { following: id } });
+      res.status(200).json({ message: "User Unfollowed successfully" });
     } else {
       //follow User
       await User.findByIdAndUpdate(id, { $push: { followers: req.user?._id } });
       await User.findByIdAndUpdate(req.user?._id, { $push: { following: id } });
+      res.status(200).json({ message: "User followed successfully" });
     }
   } catch (err) {
     console.log(err);
