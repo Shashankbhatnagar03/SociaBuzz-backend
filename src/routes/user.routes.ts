@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   signupUser,
+  updateUser,
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
@@ -13,5 +14,6 @@ router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/follow/:id", verifyJWT, followUnFollowUser);
+router.post("/update/:id", verifyJWT, updateUser);
 
 export default router;
