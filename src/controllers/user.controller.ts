@@ -1,18 +1,11 @@
 import { Request, Response } from "express";
-import {
-  ExistingUserRequest,
-  NewUserRequest,
-  customRequest,
-} from "../types/types.js";
+import { customRequest } from "../types/types.js";
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 
 //SignUp User
-const signupUser = async (
-  req: Request<{}, {}, NewUserRequest>,
-  res: Response
-) => {
+const signupUser = async (req: customRequest, res: Response) => {
   try {
     const { name, username, email, password } = req.body;
 
@@ -53,10 +46,7 @@ const signupUser = async (
 };
 
 //Login User
-const loginUser = async (
-  req: Request<{}, {}, ExistingUserRequest>,
-  res: Response
-) => {
+const loginUser = async (req: customRequest, res: Response) => {
   try {
     const { username, password } = req.body;
     const existingUser = await User.findOne({ username });

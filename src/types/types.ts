@@ -1,5 +1,5 @@
 import { Request } from "express";
-import mongoose, { ObjectId, Schema, Types } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 export interface Iuser {
   _id: Types.ObjectId;
@@ -27,18 +27,6 @@ export interface IReply {
   text: string;
   userProfilePic?: string;
   username?: string;
-}
-
-export interface NewUserRequest {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
-}
-
-export interface ExistingUserRequest {
-  username: string;
-  password: string;
 }
 
 export interface customRequest extends Request {
