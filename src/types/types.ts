@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { ObjectId, Types } from "mongoose";
+import { ObjectId, Schema, Types } from "mongoose";
 
 export interface Iuser {
   _id: Types.ObjectId;
@@ -15,13 +15,16 @@ export interface Iuser {
   updatedAt: Date;
 }
 export interface Ipost {
-  postedBy: ObjectId;
+  postedBy: Schema.Types.ObjectId;
   text?: string;
   img?: string;
-  likes: ObjectId[];
+  likes: [Types.ObjectId];
   replies: IReply[];
 }
 
+// export interface ILike {
+//   userId: ObjectId;
+// }
 export interface IReply {
   userId: ObjectId;
   text: string;

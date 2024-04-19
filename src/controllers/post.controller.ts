@@ -2,6 +2,7 @@ import { Response } from "express";
 import { customRequest } from "../types/types.js";
 import { User } from "../models/user.model.js";
 import Post from "../models/post.model.js";
+import { ObjectId, Schema, Types } from "mongoose";
 
 const createPost = async (req: customRequest, res: Response) => {
   try {
@@ -64,4 +65,83 @@ const deletePost = async (req: customRequest, res: Response) => {
     res.status(500).json({ message: "Error will Deleting Post" });
   }
 };
-export { createPost, getPost, deletePost };
+
+const likeUnlikePost = async (req: customRequest, res: Response) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+    const userId = req.user?._id;
+    // console.log(typeof userId);
+    if (!post) return res.status(404).send({ message: "Post not Found" });
+
+    if (!userId) return res.status(404).send({ message: "userId not Found" });
+
+    const userLikedPost = post.likes.includes(userId);
+
+    if (userLikedPost) {
+      //Unlike post
+      await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
+      res.status(200).json({ message: "Post unliked successfully" });
+    } else {
+      //like Post
+      await Post.updateOne({ _id: postId }, { $push: { likes: userId } });
+      res.status(200).json({ message: "Post liked Successfully" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error will Liking/Unliking the Post" });
+  }
+};
+
+const replyToPost = async (req: customRequest, res: Response) => {
+  try {
+    const { text } = req.body;
+    const postId = req.params.id;
+    const userId = req.user?._id;
+    const userProfilePic = req.user?.profilePic;
+    const username = req.user?.username;
+
+    if (!text)
+      return res.status(404).json({ message: "Text field is required" });
+
+    const post = await Post.findById(postId);
+    if (!post)
+      return res.status(404).json({ message: "Text field is required" });
+
+    const reply = { userId, text, userProfilePic, username };
+
+    await Post.updateOne({ _id: postId }, { $push: { replies: reply } });
+    res.status(200).json({ message: "Reply added Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error while replting to a Post" });
+  }
+};
+
+const getFeedPosts = async (req: customRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+    const user = await User.findById(userId);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const following = user.following;
+    const feedPosts = await Post.find({ postedBy: { $in: following } }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({ feedPosts });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error while replting to a Post" });
+  }
+};
+
+export {
+  createPost,
+  getPost,
+  deletePost,
+  likeUnlikePost,
+  replyToPost,
+  getFeedPosts,
+};
