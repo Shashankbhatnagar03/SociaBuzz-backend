@@ -20,6 +20,8 @@ export interface Ipost {
   img?: string;
   likes: [Types.ObjectId];
   replies: IReply[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // export interface ILike {

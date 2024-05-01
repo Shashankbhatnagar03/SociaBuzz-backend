@@ -15,7 +15,7 @@ router.get("/feed", verifyJWT, getFeedPosts);
 router.get("/:id", getPost);
 router.post("/create", verifyJWT, createPost);
 router.delete("/:id", verifyJWT, deletePost);
-router.post("/like/:id", verifyJWT, likeUnlikePost);
-router.post("/reply/:id", verifyJWT, replyToPost);
+router.put("/like/:id", verifyJWT, likeUnlikePost);
+router.put("/reply/:id", verifyJWT, replyToPost);
 
 export default router;

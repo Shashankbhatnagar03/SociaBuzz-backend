@@ -11,7 +11,7 @@ import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
 const router = Router();
 
-router.get("/profile/:username", getUserProfile);
+router.get("/profile/:query", getUserProfile);
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
