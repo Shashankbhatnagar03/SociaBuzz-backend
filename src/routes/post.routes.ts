@@ -4,6 +4,7 @@ import {
   deletePost,
   getFeedPosts,
   getPost,
+  getUserPost,
   likeUnlikePost,
   replyToPost,
 } from "../controllers/post.controller.js";
@@ -13,6 +14,7 @@ const router = Router();
 
 router.get("/feed", verifyJWT, getFeedPosts);
 router.get("/:id", getPost);
+router.get("/user/:username", getUserPost);
 router.post("/create", verifyJWT, createPost);
 router.delete("/:id", verifyJWT, deletePost);
 router.put("/like/:id", verifyJWT, likeUnlikePost);
