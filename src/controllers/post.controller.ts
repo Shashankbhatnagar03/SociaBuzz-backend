@@ -3,8 +3,6 @@ import { customRequest } from "../types/types.js";
 import { User } from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import { v2 as cloudinary } from "cloudinary";
-import { ObjectId, Schema, Types } from "mongoose";
-import { error } from "console";
 
 const createPost = async (req: customRequest, res: Response) => {
   try {
@@ -37,7 +35,7 @@ const createPost = async (req: customRequest, res: Response) => {
     const newPost = new Post({ postedBy, text, img });
     await newPost.save();
 
-    res.status(201).json({ message: "Post created successfully", newPost });
+    res.status(201).json(newPost);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error will creating post" });
@@ -50,7 +48,7 @@ const getPost = async (req: customRequest, res: Response) => {
 
     if (!post) return res.status(401).json({ error: "Post not found" });
 
-    res.status(200).json({ post });
+    res.status(200).json(post);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error will Fetching Post" });
@@ -124,7 +122,7 @@ const replyToPost = async (req: customRequest, res: Response) => {
     const reply = { userId, text, userProfilePic, username };
 
     await Post.updateOne({ _id: postId }, { $push: { replies: reply } });
-    res.status(200).json({ message: "Reply added Successfully" });
+    res.status(200).json(reply);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error while replting to a Post" });
