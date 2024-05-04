@@ -37,3 +37,21 @@ export interface IReply {
 export interface customRequest extends Request {
   user?: Iuser;
 }
+
+export interface IMessage {
+  conversationId: string;
+  sender: string;
+  text: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IConversation {
+  participants: Types.ObjectId[];
+  lastMessage: {
+    text: string;
+    sender: ObjectId;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
