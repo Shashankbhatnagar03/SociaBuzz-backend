@@ -6,6 +6,7 @@ import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCooki
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import Post from "../models/post.model.js";
+
 //
 const getUserProfile = async (req: customRequest, res: Response) => {
   // query can be either username or user ID
@@ -29,6 +30,25 @@ const getUserProfile = async (req: customRequest, res: Response) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error creating user" });
+  }
+};
+
+const searchUser = async (req: customRequest, res: Response) => {
+  const filter = req.query.filter || "";
+  try {
+    // console.log("h1");
+    const users = await User.find({
+      username: {
+        $regex: filter,
+      },
+    })
+      .select("-password")
+      .select("-updatedAt");
+
+    res.status(200).json(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: " No User Found" });
   }
 };
 
@@ -225,4 +245,5 @@ export {
   followUnFollowUser,
   updateUser,
   getUserProfile,
+  searchUser,
 };

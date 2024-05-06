@@ -4,6 +4,7 @@ import {
   getUserProfile,
   loginUser,
   logoutUser,
+  searchUser,
   signupUser,
   updateUser,
 } from "../controllers/user.controller.js";
@@ -12,6 +13,7 @@ import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 const router = Router();
 
 router.get("/profile/:query", getUserProfile);
+router.get("/profiles/bulk", searchUser);
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
