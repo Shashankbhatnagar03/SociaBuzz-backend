@@ -44,6 +44,7 @@ export interface IMessage {
   text: string;
   createdAt: Date;
   updatedAt: Date;
+  seen: boolean;
 }
 
 export interface IConversation {
@@ -51,6 +52,7 @@ export interface IConversation {
   lastMessage: {
     text: string;
     sender: ObjectId;
+    seen: boolean;
   };
   createdAt: Date;
   updatedAt: Date;
