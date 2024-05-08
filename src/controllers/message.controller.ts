@@ -2,6 +2,7 @@ import { Response } from "express";
 import { customRequest } from "../types/types.js";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getRecipientSocketId, io } from "../socket/socket.js";
 
 const sendMessage = async (req: customRequest, res: Response) => {
   try {
@@ -37,6 +38,10 @@ const sendMessage = async (req: customRequest, res: Response) => {
         },
       }),
     ]);
+    const recipientSocketId = getRecipientSocketId(recipientId);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {

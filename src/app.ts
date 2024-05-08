@@ -6,9 +6,9 @@ import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import { v2 as cloudinary } from "cloudinary";
+import { app, server } from "./socket/socket.js";
 dotenv.config();
 connectDB();
-const app = express();
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -23,4 +23,4 @@ app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/messages", messageRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("server started at local host " + PORT));
+server.listen(PORT, () => console.log("server started at local host " + PORT));
