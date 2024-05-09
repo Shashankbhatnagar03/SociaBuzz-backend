@@ -45,6 +45,7 @@ export interface IMessage {
   createdAt: Date;
   updatedAt: Date;
   seen: boolean;
+  img: string;
 }
 
 export interface IConversation {
