@@ -51,6 +51,34 @@ const searchUser = async (req: customRequest, res: Response) => {
     res.status(500).json({ error: " No User Found" });
   }
 };
+const getSuggestedUsers = async (req: customRequest, res: Response) => {
+  try {
+    //exclude current user and users that current user is already following
+    const userId = req.user?._id;
+    const usersFollowedByYou = await User.findById(userId).select("following");
+    const users = await User.aggregate([
+      {
+        $match: {
+          _id: { $ne: userId }, //exclude current user
+        },
+      },
+      {
+        $sample: { size: 10 },
+      },
+    ]);
+
+    const filteredUsers = users.filter(
+      (user) => !usersFollowedByYou?.following.includes(user._id)
+    );
+    const suggestedUsers = filteredUsers.slice(0, 5);
+    suggestedUsers.forEach((user) => {
+      user.password = "";
+    }); //remove password from response
+    res.status(200).json(suggestedUsers);
+  } catch (error) {
+    res.status(500).json({ error: "Error in getting suggested users" });
+  }
+};
 
 //SignUp User
 const signupUser = async (req: customRequest, res: Response) => {
@@ -246,4 +274,5 @@ export {
   updateUser,
   getUserProfile,
   searchUser,
+  getSuggestedUsers,
 };
