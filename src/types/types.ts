@@ -49,6 +49,7 @@ export interface IMessage {
 }
 
 export interface IConversation {
+  newConversation: boolean;
   participants: Types.ObjectId[];
   lastMessage: {
     text: string;

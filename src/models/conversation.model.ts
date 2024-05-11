@@ -3,6 +3,10 @@ import { IConversation } from "../types/types.js";
 
 const conversationSchema = new Schema(
   {
+    newConversation: {
+      type: Boolean,
+      default: false,
+    },
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     lastMessage: {
       text: String,
