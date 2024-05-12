@@ -11,6 +11,7 @@ export interface Iuser {
   followers: string;
   following: string;
   bio: string;
+  isFrozen: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,9 +25,6 @@ export interface Ipost {
   updatedAt: Date;
 }
 
-// export interface ILike {
-//   userId: ObjectId;
-// }
 export interface IReply {
   userId: ObjectId;
   text: string;

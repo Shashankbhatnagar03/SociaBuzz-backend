@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   followUnFollowUser,
+  freezeAccount,
   getSuggestedUsers,
   getUserProfile,
   loginUser,
@@ -21,5 +22,6 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/follow/:id", verifyJWT, followUnFollowUser);
 router.put("/update/:id", verifyJWT, updateUser);
+router.put("/freeze", verifyJWT, freezeAccount);
 
 export default router;

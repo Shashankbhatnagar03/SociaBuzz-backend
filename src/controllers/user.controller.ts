@@ -139,6 +139,11 @@ const loginUser = async (req: customRequest, res: Response) => {
     if (!isPasswordCorrect)
       return res.status(400).json({ error: "Invalid password" });
 
+    if (existingUser.isFrozen) {
+      existingUser.isFrozen = false;
+      await existingUser.save();
+    }
+
     generateTokenAndSetCookie(existingUser._id, res);
 
     res.status(200).json({
@@ -266,6 +271,21 @@ const updateUser = async (req: customRequest, res: Response) => {
     res.status(500).json({ error: "Error in Update User " });
   }
 };
+
+const freezeAccount = async (req: customRequest, res: Response) => {
+  try {
+    const user = await User.findById(req.user?._id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.isFrozen = true;
+    await user.save();
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Error in Update User " });
+  }
+};
 export {
   signupUser,
   loginUser,
@@ -275,4 +295,5 @@ export {
   getUserProfile,
   searchUser,
   getSuggestedUsers,
+  freezeAccount,
 };
