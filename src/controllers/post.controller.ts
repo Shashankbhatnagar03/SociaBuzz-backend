@@ -3,16 +3,27 @@ import { customRequest } from "../types/types.js";
 import { User } from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import {
+  PostInput,
+  PostSchema,
+  ReplyInput,
+  ReplySchema,
+} from "../utils/validation/post.validation.js";
 
 const createPost = async (req: customRequest, res: Response) => {
   try {
-    const { postedBy, text } = req.body;
-    let { img } = req.body;
+    const { success } = PostSchema.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ error: "Invalid Input Fields" });
+    }
+    const { postedBy, text }: PostInput = req.body;
+    let { img }: PostInput = req.body;
 
-    if (!postedBy || !text)
-      return res
-        .status(400)
-        .json({ error: "PostedBy and text fields are required" });
+    if (!postedBy)
+      return res.status(400).json({ error: "PostedBy fields are required" });
+
+    if (!text && !img)
+      return res.status(400).json({ error: "Text or Image is required" });
 
     const user = await User.findById(postedBy);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -22,7 +33,7 @@ const createPost = async (req: customRequest, res: Response) => {
 
     const maxLength = 500;
 
-    if (text.length > maxLength)
+    if (text && text.length > maxLength)
       return res
         .status(400)
         .json({ error: `Text must be less than ${maxLength} characters` });
@@ -108,7 +119,11 @@ const likeUnlikePost = async (req: customRequest, res: Response) => {
 
 const replyToPost = async (req: customRequest, res: Response) => {
   try {
-    const { text } = req.body;
+    const { success } = ReplySchema.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ error: "Invalid Input Fields" });
+    }
+    const { text }: ReplyInput = req.body;
     const postId = req.params.id;
     const userId = req.user?._id;
     const userProfilePic = req.user?.profilePic;

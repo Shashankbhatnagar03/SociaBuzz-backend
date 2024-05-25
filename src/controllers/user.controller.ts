@@ -6,6 +6,15 @@ import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCooki
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
 import Post from "../models/post.model.js";
+import {
+  LoginUserInput,
+  LoginUserSchema,
+  SearchUserSchema,
+  SignupUserInput,
+  SignupUserSchema,
+  UpdateUserInput,
+  UpdateUserSchema,
+} from "../utils/validation/user.validation.js";
 
 //
 const getUserProfile = async (req: customRequest, res: Response) => {
@@ -34,6 +43,11 @@ const getUserProfile = async (req: customRequest, res: Response) => {
 };
 
 const searchUser = async (req: customRequest, res: Response) => {
+  const { success } = SearchUserSchema.safeParse(req.query);
+  if (!success) {
+    return res.status(400).json({ error: "Invalid query" });
+  }
+
   const filter = req.query.filter || "";
   try {
     // console.log("h1");
@@ -83,7 +97,12 @@ const getSuggestedUsers = async (req: customRequest, res: Response) => {
 //SignUp User
 const signupUser = async (req: customRequest, res: Response) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { success } = SignupUserSchema.safeParse(req.body);
+
+    if (!success) {
+      return res.status(411).json({ error: "Invalid Credentials" });
+    }
+    const { name, username, email, password }: SignupUserInput = req.body;
 
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
@@ -126,7 +145,11 @@ const signupUser = async (req: customRequest, res: Response) => {
 //Login User
 const loginUser = async (req: customRequest, res: Response) => {
   try {
-    const { username, password } = req.body;
+    const { success } = LoginUserSchema.safeParse(req.body);
+    if (!success) {
+      return res.status(411).json({ error: "Invalid Credentials" });
+    }
+    const { username, password }: LoginUserInput = req.body;
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
       return res.status(400).json({ error: "Invalid Username" });
@@ -211,7 +234,11 @@ const followUnFollowUser = async (req: customRequest, res: Response) => {
 //update user
 const updateUser = async (req: customRequest, res: Response) => {
   try {
-    const { name, email, username, password, bio } = req.body;
+    const { success } = UpdateUserSchema.safeParse(req.body);
+
+    if (!success) return res.status(400).json({ error: "Invalid input" });
+
+    const { name, email, username, password, bio }: UpdateUserInput = req.body;
     let { profilePic } = req.body;
     const userId = req.user?._id;
 

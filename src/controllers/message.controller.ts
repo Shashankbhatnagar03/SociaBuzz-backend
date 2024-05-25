@@ -4,10 +4,18 @@ import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getRecipientSocketId, io } from "../socket/socket.js";
 import { v2 as cloudinary } from "cloudinary";
+import {
+  SendMessageSchema,
+  SendMessageType,
+} from "../utils/validation/message.validation.js";
 const sendMessage = async (req: customRequest, res: Response) => {
   try {
-    const { recipientId, message } = req.body;
-    let { img } = req.body;
+    const { success } = SendMessageSchema.safeParse(req.body);
+    if (!success) {
+      return res.status(400).json({ error: "Invalid data" });
+    }
+    const { recipientId, message }: SendMessageType = req.body;
+    let { img }: SendMessageType = req.body;
     const senderId = req.user?._id;
 
     let conversation = await Conversation.findOne({
