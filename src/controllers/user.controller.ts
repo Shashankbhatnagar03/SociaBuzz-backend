@@ -235,11 +235,10 @@ const followUnFollowUser = async (req: customRequest, res: Response) => {
 const updateUser = async (req: customRequest, res: Response) => {
   try {
     const { success } = UpdateUserSchema.safeParse(req.body);
-
     if (!success) return res.status(400).json({ error: "Invalid input" });
 
     const { name, email, username, password, bio }: UpdateUserInput = req.body;
-    let { profilePic } = req.body;
+    let { profilePic }: UpdateUserInput = req.body;
     const userId = req.user?._id;
 
     let user = await User.findById(userId);

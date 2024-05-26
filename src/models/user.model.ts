@@ -5,11 +5,14 @@ const userSchema = new Schema(
     name: {
       type: String,
       require: [true, "Please enter your Full Name"],
+      trim: true,
     },
     username: {
       type: String,
       require: [true, "Please enter your Username"],
       unique: [true, "Username already exists!"],
+      trim: [true, ""],
+      lowercase: [true, "username Should be in lower case"],
     },
     email: {
       type: String,
@@ -18,7 +21,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      require: [true, "Please enter Password"],
+      required: [true, "Please enter Password"],
       minLength: 6,
     },
     profilePic: {
