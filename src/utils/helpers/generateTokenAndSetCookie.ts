@@ -15,6 +15,7 @@ const generateTokenAndSetCookie = (userId: Types.ObjectId, res: Response) => {
     httpOnly: true,
     maxAge: 15 * 24 * 60 * 60 * 1000, // 30 days
     sameSite: "none",
+    secure: true,
   });
 
   return token;
