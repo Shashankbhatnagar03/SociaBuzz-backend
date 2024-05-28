@@ -5,7 +5,10 @@ import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
 import cors from "cors";
 const app = express();
-const allowedOrigins = ["https://socia-buzzz.netlify.app"];
+const allowedOrigins = [
+  "https://socia-buzzz.netlify.app",
+  "http://localhost:3000",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
