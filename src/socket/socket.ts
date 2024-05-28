@@ -3,8 +3,13 @@ import http from "http";
 import express from "express";
 import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
-
+import cors from "cors";
 const app = express();
+app.use(
+  cors({
+    origin: "https://socia-buzzz.netlify.app",
+  })
+);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
