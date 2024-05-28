@@ -14,7 +14,7 @@ const generateTokenAndSetCookie = (userId: Types.ObjectId, res: Response) => {
   res.cookie("jwt", token, {
     httpOnly: true,
     maxAge: 15 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: "strict",
+    sameSite: "none",
   });
 
   return token;
