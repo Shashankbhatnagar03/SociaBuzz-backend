@@ -7,13 +7,13 @@ import cors from "cors";
 const app = express();
 app.use(
   cors({
-    origin: "https://socia-buzzz.netlify.app",
+    origin: ["https://socia-buzzz.netlify.app", "http://localhost:3000"],
   })
 );
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://socia-buzzz.netlify.app",
+    origin: ["https://socia-buzzz.netlify.app", "http://localhost:3000"],
     methods: "*",
   },
 });
