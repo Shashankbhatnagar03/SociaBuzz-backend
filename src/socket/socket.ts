@@ -5,28 +5,19 @@ import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
 import cors from "cors";
 const app = express();
-const allowedOrigins = [
-  "https://socia-buzzz.netlify.app",
-  "http://localhost:3000",
-];
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        var msg =
-          "The CORS policy for this site does not allow access from this origin.";
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
+    origin: "https://socia-buzzz.netlify.app",
+    credentials: true,
+    methods: "*",
   })
 );
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://socia-buzzz.netlify.app", "http://localhost:3000"],
+    origin: "https://socia-buzzz.netlify.app",
     methods: "*",
+    credentials: true,
   },
 });
 
