@@ -9,14 +9,14 @@ app.use(
   cors({
     origin: "https://socia-buzzz.netlify.app",
     credentials: true,
-    methods: "*",
+    methods: ["PUT", "GET", "POST", "DELETE"],
   })
 );
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://socia-buzzz.netlify.app",
-    methods: "*",
+    methods: ["PUT", "GET", "POST", "DELETE"],
     credentials: true,
   },
 });
